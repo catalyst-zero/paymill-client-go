@@ -1,7 +1,7 @@
 package paymill
 
 import (
-  "fmt"
+  "net/http"
   "encoding/json"
 )
 
@@ -10,12 +10,15 @@ type PaymentResponse struct {
   Mode string
 }
 
-func NewPaymentResponse(b []byte) (r *PaymentResponse) {
-  err := json.Unmarshal(b, &r)
+func NewPaymentResponse(resp *http.Response, body []byte) (r *PaymentResponse, e error) {
+  err := json.Unmarshal(body, &r)
   if err != nil {
-    fmt.Printf("%s", string(b))
     panic(err)
   }
 
-  return r
+  if (resp.StatusCode >= 400) {
+    e = NewErrorResponse(resp, body)
+  }
+
+  return r, e
 }

@@ -34,7 +34,37 @@ func UrlFor(entity string) (string) {
   return fmt.Sprintf("%s/%s", BaseUrl(), entity)
 }
 
-func (c *Client) CreatePayment(token string, client *string) (*Payment) {
+func (c *Client) doRequest(resource string, method string, data url.Values) (resp *http.Response, body []byte) {
+  http_client := &http.Client{}
+
+  // This can be wrapped in a method
+  var req *http.Request
+  req, err := http.NewRequest(method, UrlFor(resource), strings.NewReader(data.Encode()))
+  if err != nil {
+    panic(err)
+  }
+
+  if method == "POST" {
+    req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+  }
+  req.SetBasicAuth(c.Token, "")
+
+  resp, err = http_client.Do(req)
+  if err != nil {
+    panic(err)
+  }
+  defer resp.Body.Close()
+
+  body, err = ioutil.ReadAll(resp.Body)
+
+  if err != nil {
+    panic(err)
+  }
+
+  return
+}
+
+func (c *Client) CreatePayment(token string, client *string) (*Payment, error) {
   values := url.Values{}
   values.Add("token", token)
 
@@ -42,25 +72,20 @@ func (c *Client) CreatePayment(token string, client *string) (*Payment) {
     values.Add("client", *client)
   }
 
-  http_client := &http.Client{}
+  resp, body := c.doRequest("payments", "POST", values)
 
-  // This can be wrapped in a method
-  var req *http.Request
-  req, err := http.NewRequest("POST", UrlFor("payments"), strings.NewReader(values.Encode()))
-  if err != nil {
-    panic(err)
-  }
-  req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-  req.SetBasicAuth(c.Token, "")
+  r, err := NewPaymentResponse(resp, body)
 
-  var resp *http.Response
-  resp, err = http_client.Do(req)
-  if err != nil {
-    panic(err)
-  }
-  defer resp.Body.Close()
+  return r.Data, err
+}
 
-  body, err := ioutil.ReadAll(resp.Body)
+func (c *Client) PaymentDetails(id string) (*Payment, error) {
+  values := url.Values{}
+  resource := fmt.Sprintf("payments/%s", id)
 
-  return NewPaymentResponse(body).Data
+  resp, body := c.doRequest(resource, "GET", values)
+
+  r, err := NewPaymentResponse(resp, body)
+
+  return r.Data, err
 }

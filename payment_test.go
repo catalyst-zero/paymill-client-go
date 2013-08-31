@@ -14,6 +14,7 @@ type TestApi struct {
 
 type TestPayment struct {
   Token string
+  Id string
 }
 
 type TestFixtures struct {
@@ -52,12 +53,23 @@ func TestRunner(t *testing.T) {
 }
 // End of setup
 
-func (t *testSuite) TestCreatePayment() {
+func (t *testSuite) TestCreateCreditCardPayment() {
   token := t.Config.Fixtures.Payment.Token
   c := NewClient(t.Config.Api.Token)
 
-  p := c.CreatePayment(token, nil)
+  p, err := c.CreatePayment(token, nil)
+
+  t.Equal(err, nil)
 
   t.Not(t.Equal(p.Id, ""))
   t.Equal(p.PaymentType(), CreditCard)
+}
+
+func (t *testSuite) TestPaymentDetailsForNonExistingPayment() {
+  id := "not_found"
+  c := NewClient(t.Config.Api.Token)
+
+  _, err := c.PaymentDetails(id)
+
+  t.Equal("Payment not Found", err.Error())
 }
