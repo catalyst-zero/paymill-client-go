@@ -89,3 +89,22 @@ func (c *Client) PaymentDetails(id string) (*Payment, error) {
 
   return r.Data, err
 }
+
+func (c *Client) ListPayments(order string, filter string) (payments []Payment, err error) {
+  values := url.Values{}
+  if !Empty(order) {
+    values.Add("order", order)
+  }
+
+  if !Empty(filter) {
+    values.Add("filter", filter)
+  }
+
+  resource := "payments"
+
+  resp, body := c.doRequest(resource, "GET", values)
+
+  r, err := NewListPaymentResponse(resp, body)
+
+  return r.Data, err
+}

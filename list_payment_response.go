@@ -5,12 +5,13 @@ import (
   "encoding/json"
 )
 
-type PaymentResponse struct {
-  Data *Payment
+type ListPaymentResponse struct {
+  Data []Payment
+  DataCount int
   Mode string
 }
 
-func NewPaymentResponse(resp *http.Response, body []byte) (r *PaymentResponse, e error) {
+func NewListPaymentResponse(resp *http.Response, body []byte) (r *ListPaymentResponse, e error) {
   err := json.Unmarshal(body, &r)
   if err != nil {
     panic(err)

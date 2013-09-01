@@ -73,3 +73,13 @@ func (t *testSuite) TestPaymentDetailsForNonExistingPayment() {
 
   t.Equal("Payment not Found", err.Error())
 }
+
+func (t *testSuite) TestListPayments() {
+  c := NewClient(t.Config.Api.Token)
+
+  p, err := c.ListPayments("count", "card_type=visa")
+
+  t.Equal(err, nil)
+
+  t.Equal(len(p), 20)
+}
