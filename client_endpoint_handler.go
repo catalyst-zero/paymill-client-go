@@ -51,3 +51,15 @@ func (c *ApiClient) ClientUpdate(id string, email string, description string) (*
 
   return r.Data, err
 }
+
+func (c *ApiClient) RemoveClient(id string) (ok bool, err error) {
+  values := url.Values{}
+
+  resource := fmt.Sprintf("clients/%s", id)
+
+  resp, body := c.doRequest(resource, "DELETE", values)
+
+  _, err = NewClientResponse(resp, body)
+
+  return (err == nil), err
+}
