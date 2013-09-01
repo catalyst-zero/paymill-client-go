@@ -32,3 +32,22 @@ func (c *ApiClient) ClientDetails(id string) (*Client, error) {
 
   return r.Data, err
 }
+
+func (c *ApiClient) ClientUpdate(id string, email string, description string) (*Client, error) {
+  values := url.Values{}
+  if !Empty(email) {
+    values.Add("email", email)
+  }
+
+  if !Empty(description) {
+    values.Add("description", description)
+  }
+
+  resource := fmt.Sprintf("clients/%s", id)
+
+  resp, body := c.doRequest(resource, "PUT", values)
+
+  r, err := NewClientResponse(resp, body)
+
+  return r.Data, err
+}

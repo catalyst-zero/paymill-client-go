@@ -12,7 +12,7 @@ type Client struct {
   Updated string `json: "updated_at"`
   Payment []Payment
   /* Subscription []Subscription */
-  AppId *string
+  AppId string
 }
 
 func (c *Client) CreatedAt() time.Time {
