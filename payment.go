@@ -3,7 +3,6 @@ package paymill
 import (
   _ "fmt"
   "time"
-  "strconv"
 )
 
 type PaymentType int
@@ -42,13 +41,4 @@ func (p *Payment) CreatedAt() time.Time {
 
 func (p *Payment) UpdatedAt() time.Time {
   return toTime(p.Updated)
-}
-
-func toTime(s string) time.Time {
-  i, err := strconv.ParseInt(s, 10, 64)
-  if err != nil {
-    panic(err)
-  }
-
-  return time.Unix(i, 0)
 }
