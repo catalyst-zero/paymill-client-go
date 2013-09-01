@@ -108,3 +108,15 @@ func (c *Client) ListPayments(order string, filter string) (payments []Payment, 
 
   return r.Data, err
 }
+
+func (c *Client) DeletePayment(id string) (ok bool, err error) {
+  values := url.Values{}
+
+  resource := fmt.Sprintf("payments/%s", id)
+
+  resp, body := c.doRequest(resource, "DELETE", values)
+
+  _, err = NewDeletePaymentResponse(resp, body)
+
+  return (err == nil), err
+}

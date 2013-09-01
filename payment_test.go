@@ -1,7 +1,6 @@
 package paymill
 
 import (
-  _ "fmt"
   "github.com/remogatto/prettytest"
   "testing"
   "io/ioutil"
@@ -82,4 +81,13 @@ func (t *testSuite) TestListPayments() {
   t.Equal(err, nil)
 
   t.Equal(len(p), 20)
+}
+
+func (t *testSuite) TestRemoveNonExistingPayment() {
+  id := "pay_12345"
+  c := NewClient(t.Config.Api.Token)
+
+  ok, err := c.DeletePayment(id)
+  t.Equal("Creditcard not found", err.Error())
+  t.Equal(ok, false)
 }
