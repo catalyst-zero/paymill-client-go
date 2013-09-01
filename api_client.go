@@ -8,7 +8,8 @@ import (
   "io/ioutil"
 )
 
-const APIBase string = "https://api.paymill.com"
+const APIScheme string = "https"
+const APIBase string = "api.paymill.com"
 const APIVersion string = "v2"
 
 type ApiClient struct {
@@ -26,20 +27,23 @@ func NewApiClient(token string) (c *ApiClient) {
   return
 }
 
-func BaseUrl() (string) {
-  return fmt.Sprintf("%s/%s", APIBase, APIVersion)
+func UrlFor(entity string, data url.Values) (url.URL) {
+  url := url.URL{Scheme: APIScheme, Host: APIBase}
+  path := fmt.Sprintf("/%s/%s", APIVersion, entity)
+
+  url.Path = path
+  url.RawQuery = data.Encode()
+
+  return url
 }
 
-func UrlFor(entity string) (string) {
-  return fmt.Sprintf("%s/%s", BaseUrl(), entity)
-}
-
-func (c *ApiClient) doRequest(resource string, method string, data url.Values) (resp *http.Response, body []byte) {
+func (c *ApiClient) doRequest(resource string, method string, urlData url.Values, formData url.Values) (resp *http.Response, body []byte) {
   http_client := &http.Client{}
 
   // This can be wrapped in a method
   var req *http.Request
-  req, err := http.NewRequest(method, UrlFor(resource), strings.NewReader(data.Encode()))
+  url := UrlFor(resource, urlData)
+  req, err := http.NewRequest(method, url.String(), strings.NewReader(formData.Encode()))
   if err != nil {
     panic(err)
   }

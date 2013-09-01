@@ -45,3 +45,14 @@ func (t *testSuite) TestRemoveClient() {
   t.Equal(err, nil)
   t.Equal(ok, true)
 }
+
+func (t *testSuite) TestClientList() {
+  client, err := t.ApiClient.CreateClient("list@example.com", "Foo")
+
+  payments, err := t.ApiClient.ListClients("count", map[string]string{"email": "list@example.com"})
+
+  t.Equal(err, nil)
+  t.Equal(len(payments), 1)
+
+  t.ApiClient.RemoveClient(client.Id)
+}

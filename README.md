@@ -6,6 +6,7 @@ Wrapper for the [Paymill API](https://www.paymill.com/en-gb/documentation-3/refe
 
 ## Supported endpoints
 
+* Clients
 * Payments
 
 ## Changelog
