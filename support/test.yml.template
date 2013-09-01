@@ -1,7 +1,2 @@
 api:
   token: "api token"
-
-fixtures:
-  payment:
-    token: "credit card token"
-    id: "payment unique id"

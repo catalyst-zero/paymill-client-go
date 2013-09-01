@@ -54,7 +54,7 @@ func TestRunner(t *testing.T) {
 
 func (t *testSuite) TestCreateCreditCardPayment() {
   token := t.Config.Fixtures.Payment.Token
-  c := NewClient(t.Config.Api.Token)
+  c := NewApiClient(t.Config.Api.Token)
 
   p, err := c.CreatePayment(token, nil)
 
@@ -66,7 +66,7 @@ func (t *testSuite) TestCreateCreditCardPayment() {
 
 func (t *testSuite) TestPaymentDetailsForNonExistingPayment() {
   id := "not_found"
-  c := NewClient(t.Config.Api.Token)
+  c := NewApiClient(t.Config.Api.Token)
 
   _, err := c.PaymentDetails(id)
 
@@ -74,7 +74,7 @@ func (t *testSuite) TestPaymentDetailsForNonExistingPayment() {
 }
 
 func (t *testSuite) TestListPayments() {
-  c := NewClient(t.Config.Api.Token)
+  c := NewApiClient(t.Config.Api.Token)
 
   p, err := c.ListPayments("count", "card_type=visa")
 
@@ -85,7 +85,7 @@ func (t *testSuite) TestListPayments() {
 
 func (t *testSuite) TestRemoveNonExistingPayment() {
   id := "pay_12345"
-  c := NewClient(t.Config.Api.Token)
+  c := NewApiClient(t.Config.Api.Token)
 
   ok, err := c.DeletePayment(id)
   t.Equal("Creditcard not found", err.Error())

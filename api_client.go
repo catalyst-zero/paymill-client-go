@@ -11,16 +11,16 @@ import (
 const APIBase string = "https://api.paymill.com"
 const APIVersion string = "v2"
 
-type Client struct {
+type ApiClient struct {
   Token string
 }
 
-func NewClient(token string) (c *Client) {
+func NewApiClient(token string) (c *ApiClient) {
   if strings.Trim(token, " ") == "" {
     return nil
   }
 
-  c = &Client{
+  c = &ApiClient{
     Token: token,
   }
   return
@@ -34,7 +34,7 @@ func UrlFor(entity string) (string) {
   return fmt.Sprintf("%s/%s", BaseUrl(), entity)
 }
 
-func (c *Client) doRequest(resource string, method string, data url.Values) (resp *http.Response, body []byte) {
+func (c *ApiClient) doRequest(resource string, method string, data url.Values) (resp *http.Response, body []byte) {
   http_client := &http.Client{}
 
   // This can be wrapped in a method
@@ -64,7 +64,7 @@ func (c *Client) doRequest(resource string, method string, data url.Values) (res
   return
 }
 
-func (c *Client) CreatePayment(token string, client *string) (*Payment, error) {
+func (c *ApiClient) CreatePayment(token string, client *string) (*Payment, error) {
   values := url.Values{}
   values.Add("token", token)
 
@@ -79,7 +79,7 @@ func (c *Client) CreatePayment(token string, client *string) (*Payment, error) {
   return r.Data, err
 }
 
-func (c *Client) PaymentDetails(id string) (*Payment, error) {
+func (c *ApiClient) PaymentDetails(id string) (*Payment, error) {
   values := url.Values{}
   resource := fmt.Sprintf("payments/%s", id)
 
@@ -90,7 +90,7 @@ func (c *Client) PaymentDetails(id string) (*Payment, error) {
   return r.Data, err
 }
 
-func (c *Client) ListPayments(order string, filter string) (payments []Payment, err error) {
+func (c *ApiClient) ListPayments(order string, filter string) (payments []Payment, err error) {
   values := url.Values{}
   if !Empty(order) {
     values.Add("order", order)
@@ -109,7 +109,7 @@ func (c *Client) ListPayments(order string, filter string) (payments []Payment, 
   return r.Data, err
 }
 
-func (c *Client) DeletePayment(id string) (ok bool, err error) {
+func (c *ApiClient) DeletePayment(id string) (ok bool, err error) {
   values := url.Values{}
 
   resource := fmt.Sprintf("payments/%s", id)
