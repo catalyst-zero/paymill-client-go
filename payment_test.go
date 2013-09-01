@@ -5,9 +5,8 @@ import (
 
 func (t *testSuite) TestCreateCreditCardPayment() {
   token := t.Config.Fixtures.Payment.Token
-  c := NewApiClient(t.Config.Api.Token)
 
-  p, err := c.CreatePayment(token, nil)
+  p, err := t.ApiClient.CreatePayment(token, nil)
 
   t.Equal(err, nil)
 
@@ -17,17 +16,14 @@ func (t *testSuite) TestCreateCreditCardPayment() {
 
 func (t *testSuite) TestPaymentDetailsForNonExistingPayment() {
   id := "not_found"
-  c := NewApiClient(t.Config.Api.Token)
 
-  _, err := c.PaymentDetails(id)
+  _, err := t.ApiClient.PaymentDetails(id)
 
   t.Equal("Payment not Found", err.Error())
 }
 
 func (t *testSuite) TestListPayments() {
-  c := NewApiClient(t.Config.Api.Token)
-
-  p, err := c.ListPayments("count", "card_type=visa")
+  p, err := t.ApiClient.ListPayments("count", "card_type=visa")
 
   t.Equal(err, nil)
 
@@ -36,9 +32,8 @@ func (t *testSuite) TestListPayments() {
 
 func (t *testSuite) TestRemoveNonExistingPayment() {
   id := "pay_12345"
-  c := NewApiClient(t.Config.Api.Token)
 
-  ok, err := c.DeletePayment(id)
+  ok, err := t.ApiClient.DeletePayment(id)
   t.Equal("Creditcard not found", err.Error())
   t.Equal(ok, false)
 }

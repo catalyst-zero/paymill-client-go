@@ -7,6 +7,7 @@ import (
 
 type ClientResponse struct {
   Data *Client
+  Mode string
 }
 
 func NewClientResponse(resp *http.Response, body []byte) (r *ClientResponse, e error) {

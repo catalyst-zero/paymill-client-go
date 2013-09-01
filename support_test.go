@@ -29,6 +29,7 @@ type TestConfig struct {
 type testSuite struct {
   prettytest.Suite
   Config TestConfig
+  ApiClient *ApiClient
 }
 
 func TestRunner(t *testing.T) {
@@ -43,6 +44,7 @@ func TestRunner(t *testing.T) {
 
   ts := new(testSuite)
   ts.Config = c
+  ts.ApiClient = NewApiClient(c.Api.Token)
 
   prettytest.RunWithFormatter(
       t,
