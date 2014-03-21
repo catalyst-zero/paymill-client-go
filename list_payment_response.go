@@ -1,25 +1,25 @@
 package paymill
 
 import (
-  "net/http"
-  "encoding/json"
+	"encoding/json"
+	"net/http"
 )
 
 type ListPaymentResponse struct {
-  Data []Payment
-  DataCount int
-  Mode string
+	Data      []Payment
+	DataCount int
+	Mode      string
 }
 
 func NewListPaymentResponse(resp *http.Response, body []byte) (r *ListPaymentResponse, e error) {
-  err := json.Unmarshal(body, &r)
-  if err != nil {
-    panic(err)
-  }
+	err := json.Unmarshal(body, &r)
+	if err != nil {
+		panic(err)
+	}
 
-  if IsError(resp) {
-    e = NewErrorResponse(resp, body)
-  }
+	if IsError(resp) {
+		e = NewErrorResponse(resp, body)
+	}
 
-  return r, e
+	return r, e
 }

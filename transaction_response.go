@@ -5,12 +5,12 @@ import (
 	"net/http"
 )
 
-type PaymentResponse struct {
-	Data *Payment
+type TransactionResponse struct {
+	Data *Transaction
 	Mode string
 }
 
-func NewPaymentResponse(resp *http.Response, body []byte) (r *PaymentResponse, e error) {
+func NewTransactionResponse(resp *http.Response, body []byte) (r *TransactionResponse, e error) {
 	err := json.Unmarshal(body, &r)
 	if err != nil {
 		panic(err)

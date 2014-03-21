@@ -1,24 +1,24 @@
 package paymill
 
 import (
-  "net/http"
-  "encoding/json"
+	"encoding/json"
+	"net/http"
 )
 
 type ClientResponse struct {
-  Data *Client
-  Mode string
+	Data *Client
+	Mode string
 }
 
 func NewClientResponse(resp *http.Response, body []byte) (r *ClientResponse, e error) {
-  err := json.Unmarshal(body, &r)
-  if err != nil {
-    panic(err)
-  }
+	err := json.Unmarshal(body, &r)
+	if err != nil {
+		panic(err)
+	}
 
-  if IsError(resp) {
-    e = NewErrorResponse(resp, body)
-  }
+	if IsError(resp) {
+		e = NewErrorResponse(resp, body)
+	}
 
-  return r, e
+	return r, e
 }
