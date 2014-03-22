@@ -1,7 +1,6 @@
 package paymill
 
 import (
-	"fmt"
 	"net/url"
 )
 

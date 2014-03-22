@@ -15,7 +15,7 @@ const (
 // Object for direct debit payments
 type Payment struct {
 	Id          string
-	Type        string `json:"payment_type"`
+	Type        string
 	Client      *string
 	CardType    string
 	Code        string

@@ -10,7 +10,7 @@ type TransactionResponse struct {
 	Mode string
 }
 
-func NewTransactionResponse(resp *http.Response, body []byte) (r *TransactionResponse, e error) {
+func newTransactionResponse(resp *http.Response, body []byte) (r *TransactionResponse, e error) {
 	err := json.Unmarshal(body, &r)
 	if err != nil {
 		panic(err)

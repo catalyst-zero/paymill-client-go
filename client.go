@@ -10,7 +10,7 @@ type Client struct {
 	Description string
 	Created     string `json: "created_at"`
 	Updated     string `json: "updated_at"`
-	Payment     []Payment
+	Payment     []string
 	/* Subscription []Subscription */
 	AppId string
 }
