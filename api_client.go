@@ -1,11 +1,11 @@
 package paymill
 
 import (
-  "fmt"
-  "strings"
-  "net/http"
-  "net/url"
-  "io/ioutil"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 const APIScheme string = "https"
@@ -13,57 +13,57 @@ const APIBase string = "api.paymill.com"
 const APIVersion string = "v2"
 
 type ApiClient struct {
-  Token string
+	Token string
 }
 
 func NewApiClient(token string) (c *ApiClient) {
-  if strings.Trim(token, " ") == "" {
-    return nil
-  }
+	if strings.Trim(token, " ") == "" {
+		return nil
+	}
 
-  c = &ApiClient{
-    Token: token,
-  }
-  return
+	c = &ApiClient{
+		Token: token,
+	}
+	return
 }
 
-func UrlFor(entity string, data url.Values) (url.URL) {
-  url := url.URL{Scheme: APIScheme, Host: APIBase}
-  path := fmt.Sprintf("/%s/%s", APIVersion, entity)
+func UrlFor(entity string, data url.Values) url.URL {
+	url := url.URL{Scheme: APIScheme, Host: APIBase}
+	path := fmt.Sprintf("/%s/%s", APIVersion, entity)
 
-  url.Path = path
-  url.RawQuery = data.Encode()
+	url.Path = path
+	url.RawQuery = data.Encode()
 
-  return url
+	return url
 }
 
 func (c *ApiClient) doRequest(resource string, method string, urlData url.Values, formData url.Values) (resp *http.Response, body []byte) {
-  http_client := &http.Client{}
+	http_client := &http.Client{}
 
-  // This can be wrapped in a method
-  var req *http.Request
-  url := UrlFor(resource, urlData)
-  req, err := http.NewRequest(method, url.String(), strings.NewReader(formData.Encode()))
-  if err != nil {
-    panic(err)
-  }
+	// This can be wrapped in a method
+	var req *http.Request
+	url := UrlFor(resource, urlData)
+	req, err := http.NewRequest(method, url.String(), strings.NewReader(formData.Encode()))
+	if err != nil {
+		panic(err)
+	}
 
-  if method == "POST" {
-    req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-  }
-  req.SetBasicAuth(c.Token, "")
+	if method == "POST" {
+		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	}
+	req.SetBasicAuth(c.Token, "")
 
-  resp, err = http_client.Do(req)
-  if err != nil {
-    panic(err)
-  }
-  defer resp.Body.Close()
+	resp, err = http_client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
 
-  body, err = ioutil.ReadAll(resp.Body)
+	body, err = ioutil.ReadAll(resp.Body)
 
-  if err != nil {
-    panic(err)
-  }
+	if err != nil {
+		panic(err)
+	}
 
-  return
+	return
 }
