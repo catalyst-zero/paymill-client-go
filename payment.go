@@ -17,18 +17,18 @@ type Payment struct {
 	Id          string
 	Type        string
 	Client      *string
-	CardType    string
+	CardType    string `json: "card_type"`
 	Code        string
 	Account     string
 	Country     string
-	ExpireMonth int
-	ExpireYear  int
+	ExpireMonth int `json: "expire_month"`
+	ExpireYear  int `json: "expire_year"`
 	Holder      string
-	CardHolder  *string
+	CardHolder  *string `json: "card_holder"`
 	Last4       string
-	Created     string `json: "created_at"`
-	Updated     string `json: "updated_at"`
-	AppId       *string
+	Created     string  `json: "created_at"`
+	Updated     string  `json: "updated_at"`
+	AppId       *string `json: "app_id"`
 }
 
 func (p *Payment) PaymentType() PaymentType {
