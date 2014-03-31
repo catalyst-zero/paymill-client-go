@@ -5,40 +5,29 @@ import (
 	"time"
 )
 
-type PaymentType int
-
-const (
-	CreditCard PaymentType = iota
-	DebitCard
-)
-
 // Object for direct debit payments
 type Payment struct {
-	Id          string
-	Type        string
-	Client      *string
-	CardType    string `json: "card_type"`
-	Code        string
-	Account     string
-	Country     string
-	ExpireMonth int `json: "expire_month"`
-	ExpireYear  int `json: "expire_year"`
-	Holder      string
-	CardHolder  *string `json: "card_holder"`
-	Last4       string
-	Created     string  `json: "created_at"`
-	Updated     string  `json: "updated_at"`
-	AppId       *string `json: "app_id"`
-}
-
-func (p *Payment) PaymentType() PaymentType {
-	return CreditCard
+	Id          string  `json:"id"`
+	Type        string  `json:"type"`
+	Client      *string `json:"client"`
+	CardType    string  `json:"card_type"`
+	Code        string  `json:"code"`
+	Account     string  `json:"account"`
+	Country     string  `json:"country"`
+	ExpireMonth string  `json:"expire_month"`
+	ExpireYear  string  `json:"expire_year"`
+	Holder      string  `json:"holder"`
+	CardHolder  *string `json:"card_holder"`
+	Last4       string  `json:"last4"`
+	Created     int64   `json:"created_at"`
+	Updated     int64   `json:"updated_at"`
+	AppId       *string `json:"app_id"`
 }
 
 func (p *Payment) CreatedAt() time.Time {
-	return toTime(p.Created)
+	return intToTime(p.Created)
 }
 
 func (p *Payment) UpdatedAt() time.Time {
-	return toTime(p.Updated)
+	return intToTime(p.Updated)
 }
