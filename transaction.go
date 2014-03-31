@@ -15,8 +15,8 @@ type Transaction struct {
 	IsFraud      bool `json:"is_fraud"`
 	//Refunds []Refund
 	Currency     string
-	Created      string `json:"created_at"`
-	Updated      string `json:"updated_at"`
+	Created      int64  `json:"created_at"`
+	Updated      int64  `json:"updated_at"`
 	ResponseCode int    `json:"response_code"`
 	ShortId      string `json:"short_id"`
 	//Invoices []string
@@ -28,9 +28,9 @@ type Transaction struct {
 }
 
 func (t *Transaction) CreatedAt() time.Time {
-	return toTime(t.Created)
+	return intToTime(t.Created)
 }
 
 func (t *Transaction) UpdatedAt() time.Time {
-	return toTime(t.Updated)
+	return intToTime(t.Updated)
 }
