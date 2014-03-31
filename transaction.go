@@ -15,10 +15,10 @@ type Transaction struct {
 	IsFraud      bool `json:"is_fraud"`
 	//Refunds []Refund
 	Currency     string
-	Created      string `json: "created_at"`
-	Updated      string `json: "updated_at"`
-	ResponseCode int    `json: "response_code"`
-	ShortId      string `json: "short_id"`
+	Created      string `json:"created_at"`
+	Updated      string `json:"updated_at"`
+	ResponseCode int    `json:"response_code"`
+	ShortId      string `json:"short_id"`
 	//Invoices []string
 	Payment Payment
 	Client  Client

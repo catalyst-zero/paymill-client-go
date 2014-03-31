@@ -10,7 +10,6 @@ func (t *testSuite) TestCreateCreditCardPayment() {
 	t.Equal(err, nil)
 
 	t.Not(t.Equal(p.Id, ""))
-	t.Equal(p.PaymentType(), CreditCard)
 }
 
 func (t *testSuite) TestPaymentDetailsForNonExistingPayment() {
