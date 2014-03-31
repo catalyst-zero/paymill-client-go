@@ -25,9 +25,9 @@ type Payment struct {
 }
 
 func (p *Payment) CreatedAt() time.Time {
-	return toTime(p.Created)
+	return intToTime(p.Created)
 }
 
 func (p *Payment) UpdatedAt() time.Time {
-	return toTime(p.Updated)
+	return intToTime(p.Updated)
 }
