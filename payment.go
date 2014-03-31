@@ -19,8 +19,8 @@ type Payment struct {
 	Holder      string  `json:"holder"`
 	CardHolder  *string `json:"card_holder"`
 	Last4       string  `json:"last4"`
-	Created     int     `json:"created_at"`
-	Updated     int     `json:"updated_at"`
+	Created     int64   `json:"created_at"`
+	Updated     int64   `json:"updated_at"`
 	AppId       *string `json:"app_id"`
 }
 
