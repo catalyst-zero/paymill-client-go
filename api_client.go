@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+import _ "crypto/sha512"
+
 const APIScheme string = "https"
 const APIBase string = "api.paymill.com"
 const APIVersion string = "v2"
